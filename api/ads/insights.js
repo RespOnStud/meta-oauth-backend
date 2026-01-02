@@ -32,4 +32,16 @@ export default async function handler(req, res) {
     ad_account: adAccountId,
     insights: insightsData.data?.[0] || {}
   });
+
+  if (!data || data.length === 0) {
+  return res.status(200).json({
+    ad_account: adAccountId,
+    insights: {
+      impressions: 0,
+      clicks: 0,
+      spend: "0.00"
+    },
+    note: "No active ads or no data for selected period"
+  });
+}
 }
