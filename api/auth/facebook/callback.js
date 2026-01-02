@@ -4,14 +4,14 @@ export default async function handler(req, res) {
   // 1. Ошибка или отмена логина
   if (error) {
     return res.redirect(
-      `/app/facebook/error?error=${encodeURIComponent(error_description || error)}`
+      `https://facefindr-gems.lovable.app/facebook-connected?status=error&message=${encodeURIComponent(error_description || error)}`
     );
   }
 
   // 2. Code не пришёл — это ошибка OAuth
   if (!code) {
     return res.redirect(
-      `/app/facebook/error?error=No authorization code received`
+      `https://facefindr-gems.lovable.app/facebook-connected?status=error&message=No authorization code`
     );
   }
 
@@ -22,6 +22,6 @@ export default async function handler(req, res) {
   // ✔ возвращаем пользователя в UI
 
   return res.redirect(
-    `https://facefindr-gems.lovable.dev.app/facebook/connected?status=success`
+    `https://facefindr-gems.lovable.dev.app/facebook-connected?status=success`
   );
 }
