@@ -22,6 +22,6 @@ export default async function handler(req, res) {
   // ✔ возвращаем пользователя в UI
 
   return res.redirect(
-    `https://facefindr-gems.lovable.dev/app/facebook/connected?status=success`
+    `https://facefindr-gems.lovable.dev.app/facebook/connected?status=success`
   );
 }
