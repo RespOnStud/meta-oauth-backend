@@ -1,28 +1,27 @@
 export default async function handler(req, res) {
   const { code, error, error_description } = req.query;
 
-  // 1. Если пользователь отменил логин или произошла ошибка
+  // 1. Ошибка или отмена логина
   if (error) {
-    return res.status(400).json({
-      ok: false,
-      error,
-      error_description,
-    });
+    return res.redirect(
+      `/app/facebook/error?error=${encodeURIComponent(error_description || error)}`
+    );
   }
 
-  // 2. Проверяем, что code пришёл
+  // 2. Code не пришёл — это ошибка OAuth
   if (!code) {
-    return res.status(400).json({
-      ok: false,
-      message: "No authorization code received from Facebook",
-    });
+    return res.redirect(
+      `/app/facebook/error?error=No authorization code received`
+    );
   }
 
-  // 3. Пока НИЧЕГО не обмениваем на access_token
-  // (это нормально для текущего этапа и App Review)
-  return res.status(200).json({
-    ok: true,
-    message: "Facebook OAuth callback received",
-    code,
-  });
+  // 3. REVIEW-SAFE логика:
+  // ✔ code получен
+  // ❌ токен НЕ обмениваем
+  // ❌ данные НЕ дергаем
+  // ✔ возвращаем пользователя в UI
+
+  return res.redirect(
+    `/app/facebook/connected?status=success`
+  );
 }
